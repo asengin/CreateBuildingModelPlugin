@@ -7,9 +7,9 @@ using System.Threading.Tasks;
 
 namespace CreateBuildingModelPlugin
 {
-    class WallCreator
+    class Creator
     {
-        public WallCreator(Document doc, double width, double length, Level firstLevel, Level secondlevel)
+        public static void NewWall(Document doc, double width, double length, Level firstLevel, Level secondlevel)
         {
             width = UnitUtils.ConvertToInternalUnits(10000, UnitTypeId.Millimeters);
             length = UnitUtils.ConvertToInternalUnits(8000, UnitTypeId.Millimeters);

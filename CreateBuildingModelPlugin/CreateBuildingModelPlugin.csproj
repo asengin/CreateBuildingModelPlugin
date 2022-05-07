@@ -50,7 +50,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CreateBuildingModel.cs" />
-    <Compile Include="WallCreator.cs" />
+    <Compile Include="Creator.cs" />
     <Compile Include="LevelUtils.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

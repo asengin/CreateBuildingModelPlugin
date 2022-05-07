@@ -20,7 +20,7 @@ namespace CreateBuildingModelPlugin
             Level level1 = LevelUtils.GetLevel(doc, "Уровень 1");
             Level level2 = LevelUtils.GetLevel(doc, "Уровень 2");
 
-            WallCreator firstWall = new WallCreator(doc, 10000, 12000, level1, level2);
+            Creator.NewWall(doc, 10000, 12000, level1, level2);
 
             return Result.Succeeded;
         }
