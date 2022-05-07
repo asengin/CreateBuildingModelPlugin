@@ -19,8 +19,14 @@ namespace CreateBuildingModelPlugin
 
             Level level1 = LevelUtils.GetLevel(doc, "Уровень 1");
             Level level2 = LevelUtils.GetLevel(doc, "Уровень 2");
+            const double width = 10000;
+            const double length = 12000;
+            const double floorOffset = 800;
 
-            Creator.NewWall(doc, 10000, 12000, level1, level2);
+            List<Wall> walls1Level = Creator.NewWall(doc, width, length, level1, level2);
+            Creator.AddDoor(doc, level1, walls1Level[0]);
+            for (int i = 1; i < 4; i++)
+                Creator.AddWindow(doc, level1, walls1Level[i], floorOffset);
 
             return Result.Succeeded;
         }
