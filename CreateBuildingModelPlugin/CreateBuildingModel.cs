@@ -24,7 +24,9 @@ namespace CreateBuildingModelPlugin
             const double floorOffset = 800;
 
             List<Wall> walls1Level = Creator.NewWall(doc, width, length, level1, level2);
+            
             Creator.AddDoor(doc, level1, walls1Level[0]);
+            
             for (int i = 1; i < 4; i++)
                 Creator.AddWindow(doc, level1, walls1Level[i], floorOffset);
 
