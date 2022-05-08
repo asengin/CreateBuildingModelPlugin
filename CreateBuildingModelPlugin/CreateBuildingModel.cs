@@ -22,6 +22,8 @@ namespace CreateBuildingModelPlugin
             const double width = 10000;
             const double length = 12000;
             const double floorOffset = 800;
+            const double roofOverhang = 500;
+            const double roofAngle = 32;
 
             List<Wall> walls1Level = Creator.NewWall(doc, width, length, level1, level2);
             
@@ -29,6 +31,8 @@ namespace CreateBuildingModelPlugin
             
             for (int i = 1; i < 4; i++)
                 Creator.AddWindow(doc, level1, walls1Level[i], floorOffset);
+
+            Creator.MakeRoof(doc, level2, walls1Level, roofOverhang, roofAngle);
 
             return Result.Succeeded;
         }

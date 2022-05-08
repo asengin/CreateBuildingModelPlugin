@@ -1,4 +1,5 @@
-﻿using Autodesk.Revit.DB;
+﻿using Autodesk.Revit.ApplicationServices;
+using Autodesk.Revit.DB;
 using Autodesk.Revit.DB.Structure;
 using System;
 using System.Collections.Generic;
@@ -106,5 +107,51 @@ namespace CreateBuildingModelPlugin
             }
         }
 
+        public static void MakeRoof(Document doc, Level roofLevel, List<Wall> wallsContour, double roofOverhang, double roofAngle)
+        {
+            roofOverhang = UnitUtils.ConvertToInternalUnits(roofOverhang, UnitTypeId.Millimeters); //Свес кровли
+            roofAngle = Math.Tan(roofAngle);
+
+            RoofType roofType = new FilteredElementCollector(doc)
+                .OfClass(typeof(RoofType))
+                .OfType<RoofType>()
+                .Where(x => x.Name.Equals("Типовой - 400мм"))
+                .Where(x => x.FamilyName.Equals("Базовая крыша"))
+                .FirstOrDefault();
+
+            double dt = wallsContour[0].Width / 2 + roofOverhang;
+            List<XYZ> points = new List<XYZ>();
+            points.Add(new XYZ(-dt, -dt, 0));
+            points.Add(new XYZ(-dt, dt, 0));
+            points.Add(new XYZ(dt, dt, 0));
+            points.Add(new XYZ(dt, -dt, 0));
+            points.Add(new XYZ(-dt, -dt, 0));
+
+            Application app = doc.Application;
+
+            CurveArray footprint = app.Create.NewCurveArray();
+            for (int i = 0; i < wallsContour.Count; i++)
+            {
+                LocationCurve curve = wallsContour[i].Location as LocationCurve;
+                XYZ pt1 = curve.Curve.GetEndPoint(0);
+                XYZ pt2 = curve.Curve.GetEndPoint(1);
+                Line line = Line.CreateBound(pt1 + points[i], pt2 + points[i + 1]);
+                footprint.Append(line);
+            }
+
+            ModelCurveArray footPrintToModelCurveMapping = new ModelCurveArray();
+
+            using (Transaction tr = new Transaction(doc, "Создание крыши"))
+            {
+                tr.Start();
+                FootPrintRoof footPrintRoof = doc.Create.NewFootPrintRoof(footprint, roofLevel, roofType, out footPrintToModelCurveMapping);
+                foreach (ModelCurve el in footPrintToModelCurveMapping)
+                {
+                    footPrintRoof.set_DefinesSlope(el, true);
+                    footPrintRoof.set_SlopeAngle(el, roofAngle);
+                }
+                tr.Commit();
+            }
+        }
     }
 }
