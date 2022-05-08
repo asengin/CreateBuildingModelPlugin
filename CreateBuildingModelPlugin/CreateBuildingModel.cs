@@ -23,7 +23,7 @@ namespace CreateBuildingModelPlugin
             const double length = 12000;
             const double floorOffset = 800;
             const double roofOverhang = 500;
-            const double roofAngle = 32;
+            //const double roofAngle = 32;
 
             List<Wall> walls1Level = Creator.NewWall(doc, width, length, level1, level2);
             
