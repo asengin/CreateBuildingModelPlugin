@@ -32,7 +32,7 @@ namespace CreateBuildingModelPlugin
             for (int i = 1; i < 4; i++)
                 Creator.AddWindow(doc, level1, walls1Level[i], floorOffset);
 
-            Creator.MakeRoof(doc, level2, walls1Level, roofOverhang, roofAngle);
+            Creator.MakeRoof(doc, level2, roofOverhang, length);
 
             return Result.Succeeded;
         }
